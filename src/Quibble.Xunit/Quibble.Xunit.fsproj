@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Quibble.Xunit does XUnit-like asserts for text strings with JSON content.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/nrkno/json-quibble-xunit</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/nrkno/json-quibble-xunit</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/einarwh/Quibble.Xunit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/einarwh/Quibble.Xunit</RepositoryUrl>
     <IsPackable>true</IsPackable>
   </PropertyGroup>  
   <ItemGroup>
