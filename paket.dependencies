@@ -7,5 +7,5 @@ nuget System.Text.Json
 nuget FSharp.Core ~> 6
 nuget Quibble ~> 0.3
 nuget Microsoft.NET.Test.Sdk
-nuget xunit
+nuget xunit ~> 2.5
 nuget xunit.runner.visualstudio
