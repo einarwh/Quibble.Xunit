@@ -3,24 +3,31 @@
 open Xunit.Sdk
 open Quibble    
 
-type JsonAssertException(expected: obj, actual: obj, messages: string list) =
-    inherit XunitException(Message.toUserMessage messages)
+type JsonAssertException(diffMessages : string list, userMessage : string, message : string) =
 
-    member self.UserMessage = Message.toUserMessage messages
+    inherit XunitException(message)
+
+    member self.UserMessage = userMessage
     
-    member self.DiffMessages = messages
+    member self.DiffMessages = diffMessages
+
+    static member Create(expected: string, actual: string, diffMessages: string list) = 
+        let userMessage = Message.toUserMessage diffMessages 
+        let lines = [userMessage; "Expected: " + expected; "Actual: " + actual]
+        let message = lines |> String.concat System.Environment.NewLine
+        JsonAssertException(diffMessages, userMessage, message)
 
 type JsonDiffConfig = {
     allowAdditionalProperties: bool
 }
 
 module JsonAssert =
-    
+
     let Equal (expectedJsonString: string, actualJsonString: string) : unit =
         let diffs : Diff list = JsonStrings.diff actualJsonString expectedJsonString
         let messages : string list = diffs |> List.map Message.toAssertMessage
         if not (List.isEmpty messages) then
-            let ex = JsonAssertException(expectedJsonString, actualJsonString, messages)
+            let ex = JsonAssertException.Create(expectedJsonString, actualJsonString, messages)
             raise ex
         
     let EqualOverrideDefault (expectedJsonString: string, actualJsonString: string, diffConfig : JsonDiffConfig) : unit =
@@ -45,6 +52,6 @@ module JsonAssert =
         let diffs' = diffs |> List.choose (checkDiffConfig diffConfig)
         let messages : string list = diffs' |> List.map Message.toAssertMessage
         if not (List.isEmpty messages) then
-            let ex = JsonAssertException(expectedJsonString, actualJsonString, messages)
+            let ex = JsonAssertException.Create(expectedJsonString, actualJsonString, messages)
             raise ex
             
